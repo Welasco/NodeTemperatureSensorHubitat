@@ -1,0 +1,12 @@
+{
+  "httpport": 3001,
+  "GPIO": 4,
+  "temperaturesensor": {
+    "deviceid": "B827EB5363D1"
+  },
+  "notify": {
+    "address": "192.168.0.200",
+    "port": "39500"
+  }
+}
+  
