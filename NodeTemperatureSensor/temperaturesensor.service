@@ -3,13 +3,13 @@ Description=TemperatureSensor
 After=network.target
 
 [Service]
-ExecStart=/home/pi/NodeTemperatureSensorV2/temperaturesensor.js
+ExecStart=/home/pi/NodeTemperatureSensorHubitat/temperaturesensor.js
 Restart=always
 User=root
 Group=root
 Environment=PATH=/usr/bin:/usr/local/bin
 Environment=NODE_ENV=production
-WorkingDirectory=/home/pi/NodeTemperatureSensorV2
+WorkingDirectory=/home/pi/NodeTemperatureSensorHubitat
 
 [Install]
 WantedBy=multi-user.target
