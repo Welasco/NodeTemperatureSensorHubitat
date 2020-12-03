@@ -111,28 +111,36 @@ def getIpFromHex(hexAddrString) {
 }
 
 def lanResponseHandler(evt) {
-    def map = parseLanMessage(evt)
-    writeLog("EVT: ${evt}")
-    
-    //String hex = '192.168.0.252'.tokenize( '.' )*.toInteger().asType( byte[] ).encodeHex()
-    //log.debug "IP 192.168.0.252 is: ${hex.toString().toUpperCase()}"    
-    
-    //def IP = getIpFromHex("C0A800FC")
-    //log.debug "IP C0A800FC is: ${IP}"    
-    
-    def headers = map.headers;
-    def body = map.data;    
+    try{
+        def map = parseLanMessage(evt)
+        writeLog("EVT: ${evt}")
+        
+        //String hex = '192.168.0.252'.tokenize( '.' )*.toInteger().asType( byte[] ).encodeHex()
+        //log.debug "IP 192.168.0.252 is: ${hex.toString().toUpperCase()}"    
+        
+        //def IP = getIpFromHex("C0A800FC")
+        //log.debug "IP C0A800FC is: ${IP}"    
+        
+        def headers = map.headers;
+        def body = map.data;    
 
-    if (headers.'deviceType' != 'temperaturesensor') {
-        writeLog("TemperatureSensorSmartApp - Received event ${evt.stringValue} but it didn't came from TemperatureSensor")
-        writeLog("TemperatureSensorSmartApp - Received event but it didn't came from TemperatureSensor headers:  ${headers}")
-        writeLog("TemperatureSensorSmartApp - Received event but it didn't came from TemperatureSensor body: ${body}")      
-        return
+        if (headers.'deviceType' != 'temperaturesensor') {
+            writeLog("TemperatureSensorSmartApp - Received event ${evt.stringValue} but it didn't came from TemperatureSensor")
+            writeLog("TemperatureSensorSmartApp - Received event but it didn't came from TemperatureSensor headers:  ${headers}")
+            writeLog("TemperatureSensorSmartApp - Received event but it didn't came from TemperatureSensor body: ${body}")      
+            return
+        }
+
+        writeLog("TemperatureSensorSmartApp - Received event headers:  ${headers}")
+        writeLog("TemperatureSensorSmartApp - Received event body: ${body}")
+        updateTemperatureSensorceDeviceType(body.command,headers.deviceID)
     }
+    catch(MissingMethodException){
+        // these are events with description: null and data: null, so we'll just pass.
+        pass
+    }    
+    
 
-    writeLog("TemperatureSensorSmartApp - Received event headers:  ${headers}")
-    writeLog("TemperatureSensorSmartApp - Received event body: ${body}")
-    updateTemperatureSensorceDeviceType(body.command,headers.deviceID)
 }
 
 private updateTemperatureSensorceDeviceType(String cmd,deviceID) {
